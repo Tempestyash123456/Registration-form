@@ -66,5 +66,37 @@
         <h1>Welcome!</h1>
         <p>Thank you for registering with us. We are thrilled to have you on board and look forward to an exciting journey ahead!</p>
     </div>
+
+    <script>
+        // Function to get query parameters from the URL
+        function getQueryParams() {
+            const params = new URLSearchParams(window.location.search);
+            return {
+                firstname: params.get('firstname'),
+                lastname: params.get('lastname'),
+                email: params.get('email'),
+                mobile: params.get('mobile'),
+                country: params.get('country')
+            };
+        }
+    
+        // Extract parameters from the URL
+        const { firstname, lastname, email, mobile, country } = getQueryParams();
+    
+        // Update the welcome message
+        const welcomeContainer = document.getElementById('welcome-container');
+        const h2 = document.createElement('h2');
+        h2.textContent = `Hello, ${firstname} ${lastname}!`;
+        welcomeContainer.insertBefore(h2, welcomeContainer.firstChild);
+    
+        const p = document.createElement('p');
+        p.textContent = `We have sent a confirmation email to ${email}. Please verify your email address to complete the registration process.`;
+        welcomeContainer.appendChild(p);
+    
+        console.log(firstname, lastname, email, mobile, country);
+    
+        // Clear the form data from the URL
+        window.history.replaceState({}, document.title, window.location.pathname);
+    </script>
 </body>
 </html>

@@ -52,7 +52,9 @@ document.getElementById("my-form").addEventListener("submit", function (event) {
         { id: "lastname", minLength: 6, errorMessage: "Last name must be at least 6 characters long." },
         { id: "email", pattern: /^[a-zA-Z0-9._-]+@[a-zA-Z.-]+\.[a-zA-Z]{2,6}$/, errorMessage: "Please enter a valid email address." },
         { id: "mobile-number", pattern: /^[6-9][0-9]{9}$/, errorMessage: "Mobile number must start with digits 6-9 and be 10 digits long." },
-        { id: "dob", required: true, errorMessage: "Please enter your date of birth." }
+        { id: "dob", required: true, errorMessage: "Please enter your date of birth." },
+        // validate password separately
+        { id: "password", minLength: 8, errorMessage: "Password must be at least 8 characters long." }
     ];
 
     fields.forEach(function (field) {
@@ -169,7 +171,8 @@ function checkFormValidity() {
         { id: "lastname", minLength: 6 },
         { id: "email", pattern: /^[a-zA-Z0-9._-]+@[a-zA-Z.-]+\.[a-zA-Z]{2,6}$/ },
         { id: "mobile-number", pattern: /^[6-9][0-9]{9}$/ },
-        { id: "dob", required: true }
+        { id: "dob", required: true },
+        { id: "password", minLength: 8 , pattern: /^(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])(?=.*[_@.-])[a-zA-Z0-9_@.-]{8,}$/ }
     ];
 
     // Validate each field
