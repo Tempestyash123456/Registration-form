@@ -41,42 +41,7 @@ document.getElementById("my-form").addEventListener("input", function (event) {
 });
 
 document.getElementById("my-form").addEventListener("submit", function (event) {
-    let isValid = true;
-
-    document.querySelectorAll(".error").forEach(function (errorElement) {
-        errorElement.textContent = "";
-    });
-
-    const fields = [
-        { id: "firstname", minLength: 4, errorMessage: "First name must be at least 4 characters long." },
-        { id: "lastname", minLength: 6, errorMessage: "Last name must be at least 6 characters long." },
-        { id: "email", pattern: /^[a-zA-Z0-9._-]+@[a-zA-Z.-]+\.[a-zA-Z]{2,6}$/, errorMessage: "Please enter a valid email address." },
-        { id: "mobile-number", pattern: /^[6-9][0-9]{9}$/, errorMessage: "Mobile number must start with digits 6-9 and be 10 digits long." },
-        { id: "dob", required: true, errorMessage: "Please enter your date of birth." },
-        // validate password separately
-        { id: "password", minLength: 8, errorMessage: "Password must be at least 8 characters long." }
-    ];
-
-    fields.forEach(function (field) {
-        const inputElement = document.getElementById(field.id);
-        const errorElement = document.getElementById(`${field.id}-error`);
-        const value = inputElement.value.trim();
-
-        if (field.required && !value) {
-            errorElement.textContent = field.errorMessage;
-            isValid = false;
-        }
-
-        if (field.minLength && value.length < field.minLength) {
-            errorElement.textContent = field.errorMessage;
-            isValid = false;
-        }
-
-        if (field.pattern && !field.pattern.test(value)) {
-            errorElement.textContent = field.errorMessage;
-            isValid = false;
-        }
-    });
+    let isValid = checkFormValidity();  // Use the updated function to check validity
 
     if (!isValid) {
         event.preventDefault();
@@ -97,16 +62,25 @@ document.getElementById("password").addEventListener("input", function (event) {
         { id: "start-letter", pattern: /^[a-zA-Z]/ }
     ];
 
+    let passwordIsValid = true;
+
     rules.forEach(function (rule) {
         const element = document.getElementById(rule.id);
-        element.classList.toggle('valid', rule.pattern.test(value));
-        element.classList.toggle('invalid', !rule.pattern.test(value));
+        const isValid = rule.pattern.test(value);
+        element.classList.toggle('valid', isValid);
+        element.classList.toggle('invalid', !isValid);
+
+        if (!isValid) {
+            passwordIsValid = false;
+        }
     });
 
     document.getElementById("password-dialog").style.display = "block";
 
     // Re-check form validity when the password input changes
     checkFormValidity();
+
+    return passwordIsValid;
 });
 
 document.getElementById("password-revealer").addEventListener("click", function () {
@@ -171,8 +145,7 @@ function checkFormValidity() {
         { id: "lastname", minLength: 6 },
         { id: "email", pattern: /^[a-zA-Z0-9._-]+@[a-zA-Z.-]+\.[a-zA-Z]{2,6}$/ },
         { id: "mobile-number", pattern: /^[6-9][0-9]{9}$/ },
-        { id: "dob", required: true },
-        { id: "password", minLength: 8 , pattern: /^(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])(?=.*[_@.-])[a-zA-Z0-9_@.-]{8,}$/ }
+        { id: "dob", required: true }
     ];
 
     // Validate each field
@@ -212,6 +185,8 @@ function checkFormValidity() {
 
     // Toggle submit button based on validity
     document.getElementById("submit-button").disabled = !isValid;
+
+    return isValid;
 }
 
 // Attach event listeners to all input fields
