@@ -63,40 +63,34 @@
 </head>
 <body>
     <div class="welcome-container">
-        <h1>Welcome!</h1>
+        <h1>Welcome, <span id="user-name"></span>!</h1>
         <p>Thank you for registering with us. We are thrilled to have you on board and look forward to an exciting journey ahead!</p>
+        <p><strong>Email:</strong> <span id="user-email"></span></p>
+        <p><strong>Mobile Number:</strong> <span id="user-mobile"></span></p>
+        <p><strong>Date of Birth:</strong> <span id="user-dob"></span></p>
     </div>
-
+    
     <script>
-        // Function to get query parameters from the URL
+        // Function to get URL parameters
         function getQueryParams() {
             const params = new URLSearchParams(window.location.search);
             return {
-                firstname: params.get('firstname'),
-                lastname: params.get('lastname'),
-                email: params.get('email'),
-                mobile: params.get('mobile'),
-                country: params.get('country')
+                firstname: params.get("firstname"),
+                lastname: params.get("lastname"),
+                email: params.get("email"),
+                mobile: params.get("mobile"),
+                dob: params.get("dob")
             };
         }
-    
-        // Extract parameters from the URL
-        const { firstname, lastname, email, mobile, country } = getQueryParams();
-    
-        // Update the welcome message
-        const welcomeContainer = document.getElementById('welcome-container');
-        const h2 = document.createElement('h2');
-        h2.textContent = `Hello, ${firstname} ${lastname}!`;
-        welcomeContainer.insertBefore(h2, welcomeContainer.firstChild);
-    
-        const p = document.createElement('p');
-        p.textContent = `We have sent a confirmation email to ${email}. Please verify your email address to complete the registration process.`;
-        welcomeContainer.appendChild(p);
-    
-        console.log(firstname, lastname, email, mobile, country);
-    
-        // Clear the form data from the URL
-        window.history.replaceState({}, document.title, window.location.pathname);
+
+        // Get the form data from URL parameters
+        const userData = getQueryParams();
+
+        // Display the retrieved data
+        document.getElementById("user-name").textContent = userData.firstname + " " + userData.lastname;
+        document.getElementById("user-email").textContent = userData.email;
+        document.getElementById("user-mobile").textContent = userData.mobile;
+        document.getElementById("user-dob").textContent = userData.dob;
     </script>
 </body>
 </html>
